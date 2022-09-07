@@ -1,5 +1,5 @@
 import React from 'react';
-import Carousel from './Carousel';
+import GameCarousel from './GameCarousel';
 import GameList from './GameList';
 import NewGameForm from './NewGameForm';
 
@@ -7,19 +7,20 @@ class GameControl extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      formVisibleOnPage: false,
       mainGameList: [
         {
-          title: 'Test Game 1',
-          img: 'testimg.png',
-          rating: 3.6,
+          title: 'It is an Ad',
+          img: 'https://cdn.discordapp.com/attachments/819377569715191818/1017196212534911026/ikg080z6j7141.jpg',
+          rating: 0.6,
           price: 5,
           featured: false,
           platforms: 'Switch',
           id: 'kwnxoi',
         },
         {
-          title: 'Test Game 2',
-          img: 'testimg.png',
+          title: 'Invader Membrane',
+          img: 'https://cdn.discordapp.com/attachments/819377569715191818/1017196805668208740/Y_n.png',
           rating: 4.5,
           price: 7,
           featured: true,
@@ -27,16 +28,44 @@ class GameControl extends React.Component {
           id: 'oi21jxl',
         },
         {
-          title: 'Test Game 3',
-          img: 'testimg.png',
+          title: 'Preist Mouse',
+          img: 'https://cdn.discordapp.com/attachments/819377569715191818/1017197039433564200/Screenshot_20220606-084236.png',
           rating: 4.1,
           price: 2,
           featured: false,
-          platforms: 'Mac',
+          platforms: 'PC/Mac',
           id: 'mciowh24',
+        },
+        {
+          title: 'Final Donkey 7',
+          img: 'https://cdn.discordapp.com/attachments/819377569715191818/1017196805362032680/Screenshot_20210117-1954312.png',
+          rating: 2.1,
+          price: 20,
+          featured: true,
+          platforms: 'PlayStation',
+          id: 'enklxxi',
+        },
+        {
+          title: 'Carby\'s Adventure',
+          img: 'https://cdn.discordapp.com/attachments/819377569715191818/1017197197789515856/Kirby-and-the-Forgotten-Half-Car.png',
+          rating: 2.7,
+          price: 15,
+          featured: false,
+          platforms: 'Switch',
+          id: 'qtvbx',
+        },
+        {
+          title: 'Rosarama and Sad Star',
+          img: 'https://cdn.discordapp.com/attachments/819377569715191818/1017196806062493746/IllSmashWithYou.jpeg',
+          rating: 4.4,
+          price: 34,
+          featured: false,
+          platforms: 'Switch',
+          id: 'hwecver',
         },
       ],
     };
+    this.handleShowForm = this.handleShowForm.bind(this);
   }
 
   handleAddingNewGameToList = (newGame) => {
@@ -44,14 +73,36 @@ class GameControl extends React.Component {
     this.setState({ mainGameList: newMainGameList });
   };
 
+  handleShowForm = () => {
+    this.setState((prevState) => ({
+      formVisibleOnPage: !prevState.formVisibleOnPage,
+    }));
+  };
+
   render() {
+    let currentlyVisibleState = false;
+    let buttonText = null;
+    if (this.state.formVisibleOnPage) {
+      currentlyVisibleState = (
+        <NewGameForm onNewGameCreation={this.handleAddingNewGameToList} />
+      );
+      buttonText = 'Return to Game List';
+    } else {
+      currentlyVisibleState = <GameList gameList={this.state.mainGameList} />;
+      buttonText = 'Add Game';
+    }
     return (
       <React.Fragment>
-        <h4>This is game control</h4>
-        <Carousel />
+        <GameCarousel gameList={this.state.mainGameList} />
         <h4>This splits carousel stuff and game list</h4>
-        <GameList gameList={this.state.mainGameList} />
-        {/* <NewGameForm onNewGameCreation={this.handleAddingNewGameToList} /> */}
+        {currentlyVisibleState}
+        <button
+          type='button'
+          onClick={this.handleShowForm}
+          className='btn btn-warning'
+        >
+          {buttonText}
+        </button>
       </React.Fragment>
     );
   }
