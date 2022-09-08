@@ -2,12 +2,14 @@ import React from 'react';
 import GameCarousel from './GameCarousel';
 import GameList from './GameList';
 import NewGameForm from './NewGameForm';
+import GameDetail from './GameDetail';
 
 class GameControl extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       formVisibleOnPage: false,
+      selectedGame: null,
       mainGameList: [
         {
           title: 'It is an Ad',
@@ -73,22 +75,45 @@ class GameControl extends React.Component {
     this.setState({ mainGameList: newMainGameList });
   };
 
+  handleDeletingGame = (id)  => {
+    const newMainGameList = this.state.mainGameList.filter(game => game.id !== id);
+    this.setState({
+      mainGameList: newMainGameList,
+      selectedGame: null
+    });
+  }
+
   handleShowForm = () => {
-    this.setState((prevState) => ({
-      formVisibleOnPage: !prevState.formVisibleOnPage,
-    }));
+    if (this.state.selectedGame === null) {
+      this.setState((prevState) => ({
+        formVisibleOnPage: !prevState.formVisibleOnPage,
+      }));
+    } else {
+      this.setState({
+        formVisibleOnPage: false,
+        selectedGame: null
+      });
+    }
+  };
+
+  handleChangingSelectedGame = (id) => {
+    const selectedGame = this.state.mainGameList.filter(game => game.id === id)[0];
+    this.setState({selectedGame: selectedGame});
   };
 
   render() {
     let currentlyVisibleState = false;
     let buttonText = null;
-    if (this.state.formVisibleOnPage) {
+    if (this.state.selectedGame != null) {
+      currentlyVisibleState = <GameDetail game = {this.state.selectedGame} />
+      buttonText = "Return to Game List";
+    } else if (this.state.formVisibleOnPage) {
       currentlyVisibleState = (
         <NewGameForm onNewGameCreation={this.handleAddingNewGameToList} />
       );
       buttonText = 'Return to Game List';
     } else {
-      currentlyVisibleState = <GameList gameList={this.state.mainGameList} />;
+      currentlyVisibleState = <GameList gameList={this.state.mainGameList} onGameSelection={this.handleChangingSelectedGame} />;
       buttonText = 'Add Game';
     }
     return (

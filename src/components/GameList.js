@@ -38,7 +38,8 @@ function GameList(props) {
                   rating={game.rating}
                   price={game.price}
                   platforms={game.platforms}
-                  key={game.id}
+                  id={game.id}
+                  whenGameClicked = { props.onGameSelection }
                 />
               </div>
             </div>
@@ -51,6 +52,7 @@ function GameList(props) {
 
 GameList.propTypes = {
   gameList: PropTypes.array,
+  onGameSelection: PropTypes.func
 };
 
 export default GameList;

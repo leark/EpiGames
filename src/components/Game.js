@@ -9,14 +9,17 @@ function Game(props){
     padding: '5px',
     textAlign: 'left'
   }
+
   return (
     <React.Fragment>
-      <div style={gameStyles}>
-        <img src={props.img} width='230px'/>
+      <div style={gameStyles} onClick = {() => props.whenGameClicked(props.id)}>
+        <img src={props.img} alt={props.title} width='230px'/>
         <h2>{props.title}</h2>
         <h4>Rating {props.rating}</h4>
         <p>$ {props.price}</p>
         <p>Platforms: {props.platforms}</p>
+        <button type='button' onClick='' className=''>Update</button>
+        <button type='button' onClick='' className=''>Delete</button>
       </div>
     </React.Fragment>
   );
@@ -29,7 +32,8 @@ Game.propTypes = {
   price: PropTypes.number,
   featured: PropTypes.bool,
   platforms: PropTypes.string,
-  
+  id: PropTypes.string,
+  whenGameClicked: PropTypes.func,
 };
 
 export default Game;
