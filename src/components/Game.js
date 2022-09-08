@@ -15,11 +15,11 @@ function Game(props){
       <div style={gameStyles} onClick = {() => props.whenGameClicked(props.id)}>
         <img src={props.img} alt={props.title} width='230px'/>
         <h2>{props.title}</h2>
-        <h4>Rating {props.rating}</h4>
+        <h4>Rating <span role='img'>⭐</span> {props.rating}</h4>
         <p>$ {props.price}</p>
         <p>Platforms: {props.platforms}</p>
-        <button type='button' onClick='' className=''>Update</button>
-        <button type='button' onClick='' className=''>Delete</button>
+        {/* <button type='button' onClick='' className=''>Update</button>
+        <button type='button' onClick='' className=''>Delete</button> */}
       </div>
     </React.Fragment>
   );

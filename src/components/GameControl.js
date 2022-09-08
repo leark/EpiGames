@@ -1,8 +1,9 @@
 import React from 'react';
 import GameCarousel from './GameCarousel';
-import GameList from './GameList';
+import MainGameList from './GameList';
 import NewGameForm from './NewGameForm';
 import GameDetail from './GameDetail';
+import UpdateGameForm from './UpdateGameForm';
 
 class GameControl extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class GameControl extends React.Component {
     this.state = {
       formVisibleOnPage: false,
       selectedGame: null,
+      editing: false,
       mainGameList: [
         {
           title: 'It is an Ad',
@@ -70,6 +72,11 @@ class GameControl extends React.Component {
     this.handleShowForm = this.handleShowForm.bind(this);
   }
 
+  handleEditClick = () => {
+    console.log("handleEditClick reached!");
+    this.setState({editing: true});
+  }
+
   handleAddingNewGameToList = (newGame) => {
     const newMainGameList = this.state.mainGameList.concat(newGame);
     this.setState({ mainGameList: newMainGameList });
@@ -91,7 +98,8 @@ class GameControl extends React.Component {
     } else {
       this.setState({
         formVisibleOnPage: false,
-        selectedGame: null
+        selectedGame: null,
+        editing: false
       });
     }
   };
@@ -100,12 +108,24 @@ class GameControl extends React.Component {
     const selectedGame = this.state.mainGameList.filter(game => game.id === id)[0];
     this.setState({selectedGame: selectedGame});
   };
+  
+  handleEditingGameInList = (gameToEdit) => {
+    const editedMainGameList = this.state.mainGameList.filter(game => game.id != this.state.selectedGame.id).concat(gameToEdit);
+    this.setState({
+      gameList: editedMainGameList,
+      editing: false,
+      selectedGame: null
+    });
+  }
 
   render() {
     let currentlyVisibleState = false;
     let buttonText = null;
-    if (this.state.selectedGame != null) {
-      currentlyVisibleState = <GameDetail game = {this.state.selectedGame} />
+    if (this.state.editing) {
+      currentlyVisibleState = <UpdateGameForm game = {this.state.selectedGame} onEditGame = {this.handleEditingGameInList} />
+      buttonText = "Return to Game List";}
+      else if (this.state.selectedGame != null) {
+      currentlyVisibleState = <GameDetail game = {this.state.selectedGame} onClickingDelete = {this.handleDeletingGame} onClickingEdit = {this.handleEditClick} />
       buttonText = "Return to Game List";
     } else if (this.state.formVisibleOnPage) {
       currentlyVisibleState = (
@@ -113,7 +133,7 @@ class GameControl extends React.Component {
       );
       buttonText = 'Return to Game List';
     } else {
-      currentlyVisibleState = <GameList gameList={this.state.mainGameList} onGameSelection={this.handleChangingSelectedGame} />;
+      currentlyVisibleState = <MainGameList gameList={this.state.mainGameList} onGameSelection={this.handleChangingSelectedGame} />;
       buttonText = 'Add Game';
     }
     return (
