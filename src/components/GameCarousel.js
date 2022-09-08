@@ -32,7 +32,7 @@ function GameCarousel(props) {
               <Carousel.Caption>
                 <h3 styles={textStyles}>{game.title}</h3>
                 <p styles={textStyles}>
-                  ⭐{game.rating} - ${game.price} - {game.platforms}
+                  <span role='img'>⭐</span>{game.rating} - ${game.price} - {game.platforms}
                 </p>
               </Carousel.Caption>
             </Carousel.Item>
