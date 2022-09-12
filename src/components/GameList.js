@@ -2,7 +2,7 @@ import React from 'react';
 import Game from './Game';
 import PropTypes from 'prop-types';
 
-function GameList(props) {
+function MainGameList(props) {
   const cardStyles = {
     // position: 'relative',
     marginBottom: '30px',
@@ -18,7 +18,7 @@ function GameList(props) {
     width: '300px',
   };
   
-  const gameListStyles = {
+  const mainGameListStyles = {
     // margin: 'auto',
     // marginLeft: '30%',
     marginRight: '2px',
@@ -27,7 +27,7 @@ function GameList(props) {
 
   return (
     <React.Fragment>
-      <div style={gameListStyles} className='d-flex justify-content-center'>
+      <div style={mainGameListStyles} className='d-flex justify-content-center'>
         <div className='row'>
           {props.gameList.map((game, index) => (
             <div className='card' style={cardStyles} key={index}>
@@ -38,7 +38,8 @@ function GameList(props) {
                   rating={game.rating}
                   price={game.price}
                   platforms={game.platforms}
-                  key={game.id}
+                  id={game.id}
+                  whenGameClicked = { props.onGameSelection }
                 />
               </div>
             </div>
@@ -49,8 +50,9 @@ function GameList(props) {
   );
 }
 
-GameList.propTypes = {
-  gameList: PropTypes.array,
+MainGameList.propTypes = {
+  mainGameList: PropTypes.array,
+  onGameSelection: PropTypes.func
 };
 
-export default GameList;
+export default MainGameList;
